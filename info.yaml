@@ -10,6 +10,7 @@ project:
     - prog_mux.v
     - bel.v
     - logic_cluster.v
+    - tinyFPGA.v
   top_module:  "tinyFPGA"      # put the name of your top module here, make it unique by prepending your github username
 
 # Keep a track of the submission yaml
