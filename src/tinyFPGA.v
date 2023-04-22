@@ -28,7 +28,7 @@ module tinyFPGA (
 
     logic_cluster #(
         .BEL_INPUT_WIDTH(6),
-        .BELS(5),
+        .BELS(2),
         .CLUSTER_INPUT_WIDTH(5)
     ) logic_cluster_dut (
         // Programming interface
