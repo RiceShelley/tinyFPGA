@@ -4,8 +4,8 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 import math
 
 async def cfg_bel(dut, bel_prog, bel_prog_width):
-    dut.prog_en.value = 1
     await RisingEdge(dut.prog_clk)
+    dut.prog_en.value = 1
     for i in range(bel_prog_width, 0, -1):
         dut.prog_in.value = (bel_prog >> (i - 1)) & 0x1
         await RisingEdge(dut.prog_clk)
@@ -13,8 +13,8 @@ async def cfg_bel(dut, bel_prog, bel_prog_width):
     await RisingEdge(dut.prog_clk)
 
 async def test_prog_chain(dut, prog_len):
-    dut.prog_en.value = 1
     await RisingEdge(dut.dut.prog_clk)
+    dut.prog_en.value = 1
     for i in range(0, prog_len):
         dut.prog_in.value = i % 2
         await RisingEdge(dut.dut.prog_clk)
@@ -65,11 +65,22 @@ async def test_fpga(dut):
     total_output_cfg_len = fout_prog_mux_cfg_len * fpga_outputs
     dut._log.info(f"total output cfg len {total_output_cfg_len}")
 
-    total_bit_stream_len = total_bel_prog_mux_cfg_bits + cluster_config_len
+    total_bit_stream_len = total_output_cfg_len + cluster_config_len
     dut._log.info(f"total bit stream length {total_bit_stream_len}")
 
+
+    dut.rst.value = 0
+    dut.prog_en.value = 0
+    dut.prog_in.value = 0
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
+    await ClockCycles(dut.clk, 100)
+
+    # prog in -> bel 0 (prog_mux [4 : 0] -> bel N (prog_mux [4 : 0]) -> output pin prog muxs [3 : 0] -> prog out
+    #def cfg_bel(lut_cfg, pin0_sel, pin1_sel, pin2_sel, pin3_sel, pin4_sel, ff_en):
+
+
+
 
     await test_prog_chain(dut, total_bit_stream_len)
 

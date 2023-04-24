@@ -24,13 +24,14 @@ module tinyFPGA (
     // assign inputs to cluster
     wire [4:0] cluster_in = io_in[7:3];
 
-
-    assign io_out[0] = prog_out;
-    assign io_out[1 +: BELS] = fpga_out;
-    assign io_out[7 : (BELS + 1)] = 0;
-
     wire clk = io_in[0];
     wire rst = io_in[2] & (prog_en == 1'b0);
+
+    assign io_out[0 +: BELS] = fpga_out;
+    assign io_out[BELS] = 0;
+    assign io_out[BELS + 1] = prog_en;
+    assign io_out[BELS + 2] = prog_out;
+    assign io_out[BELS + 3] = rst;
 
     // outputs from cluster
     wire [BELS - 1 : 0] cluster_out;

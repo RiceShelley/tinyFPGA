@@ -35,9 +35,10 @@ module tb (
     /* verilator lint_off UNUSED */
     wire [7:0] outputs;
     /* verilator lint_on UNUSED */
-    assign prog_out = outputs[0];
+    assign prog_out = outputs[6];
+
     localparam FPGA_OUTPUT_PINS = 4;
-    assign fpga_outputs = outputs[1 +: FPGA_OUTPUT_PINS];
+    assign fpga_outputs = outputs[0 +: FPGA_OUTPUT_PINS];
 
     assign rst_out = outputs[1];
 
