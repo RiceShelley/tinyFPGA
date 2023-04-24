@@ -27,6 +27,9 @@ module logic_cluster #(
     wire [BELS - 1 : 0] bel_outputs;
 
     localparam BEL_IN_CONNS = (BELS + CLUSTER_INPUT_WIDTH);
+    /* Possible inputs to a bel in a logic cluster are all the inputs
+    * to the logic cluster + all the outputs of the bels
+    */
     wire [BEL_IN_CONNS - 1 : 0] bel_in_conn_bus = {bel_outputs, cluster_in};
 
     genvar i;
