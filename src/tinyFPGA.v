@@ -27,8 +27,8 @@ module tinyFPGA (
     wire rst = io_in[2] & (prog_en == 1'b0);
 
     logic_cluster #(
-        .BEL_INPUT_WIDTH(6),
-        .BELS(2),
+        .BEL_INPUT_WIDTH(5),
+        .BELS(4),
         .CLUSTER_INPUT_WIDTH(5)
     ) logic_cluster_dut (
         // Programming interface
