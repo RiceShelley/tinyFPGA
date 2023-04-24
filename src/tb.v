@@ -29,7 +29,7 @@ module tb (
     initial begin
         $dumpfile ("tb.vcd");
         $dumpvars (0, tb);
-        #1
+        #1;
     end
 
     // wire up the inputs and outputs
