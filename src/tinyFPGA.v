@@ -6,7 +6,7 @@ module tinyFPGA (
   output wire [7:0] io_out
 );
     localparam BEL_INPUT_WIDTH = 5;
-    localparam BELS = 5;
+    localparam BELS = 4;
     localparam CLUSTER_INPUT_WIDTH = 5;
 
     // FPGA programming interface
@@ -26,8 +26,8 @@ module tinyFPGA (
 
 
     assign io_out[0] = prog_out;
-    assign io_out[7 : 3] = fpga_out;
-    assign io_out[1] = rst;
+    assign io_out[1 +: BELS] = fpga_out;
+    assign io_out[7 : (BELS + 1)] = 0;
 
     wire clk = io_in[0];
     wire rst = io_in[2] & (prog_en == 1'b0);

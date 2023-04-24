@@ -18,23 +18,26 @@ module tb (
     output wire rst_out,
 
     input wire [4:0] fpga_inputs,
-    output wire [4:0] fpga_outputs
+    output wire [3:0] fpga_outputs
    );
 
     // this part dumps the trace to a vcd file that can be viewed with GTKWave
     initial begin
         $dumpfile ("tb.vcd");
         $dumpvars (0, tb);
-        #1;
     end
 
     // wire up the inputs and outputs
-
+    /* verilator lint_off UNOPTFLAT */
     wire [7:0] inputs = prog_en ? {5'd0, prog_in, prog_en, clk} : {fpga_inputs, rst, prog_en, clk};
+    /* verilator lint_on UNOPTFLAT */
 
+    /* verilator lint_off UNUSED */
     wire [7:0] outputs;
+    /* verilator lint_on UNUSED */
     assign prog_out = outputs[0];
-    assign fpga_outputs = outputs[7:3];
+    localparam FPGA_OUTPUT_PINS = 4;
+    assign fpga_outputs = outputs[1 +: FPGA_OUTPUT_PINS];
 
     assign rst_out = outputs[1];
 
