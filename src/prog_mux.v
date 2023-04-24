@@ -1,4 +1,5 @@
 `default_nettype none
+`timescale 1ns/1ps
 
 module prog_mux#(
     parameter INPUTS = 2
@@ -10,7 +11,7 @@ module prog_mux#(
     output wire prog_out,
     // mux signals
     input wire [INPUTS - 1 : 0] mux_in,
-    input wire mux_out
+    output wire mux_out
 );
 
     localparam SEL_WIDTH = $clog2(INPUTS);

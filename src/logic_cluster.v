@@ -1,4 +1,5 @@
 `default_nettype none
+`timescale 1ns/1ps
 
 module logic_cluster #(
     parameter BEL_INPUT_WIDTH = 6,
@@ -30,7 +31,9 @@ module logic_cluster #(
     /* Possible inputs to a bel in a logic cluster are all the inputs
     * to the logic cluster + all the outputs of the bels
     */
+    /* verilator lint_off UNOPTFLAT */
     wire [BEL_IN_CONNS - 1 : 0] bel_in_conn_bus = {bel_outputs, cluster_in};
+    /* verilator lint_on UNOPTFLAT */
 
     genvar i;
     genvar j;
@@ -51,7 +54,7 @@ module logic_cluster #(
                 .clk(clk),
                 .rst(rst),
                 .bel_in(bel_inputs),
-                .bel_out(bel_outputs)
+                .bel_out(bel_outputs[i])
             );
 
             wire prog_mux_prog[BEL_INPUT_WIDTH : 0];
