@@ -21,6 +21,10 @@ module tb (
     output wire [3:0] fpga_outputs
    );
 
+    localparam BEL_INPUT_WIDTH = 5;
+    localparam BELS = 4;
+    localparam CLUSTER_INPUT_WIDTH = 5;
+
     // this part dumps the trace to a vcd file that can be viewed with GTKWave
     initial begin
         $dumpfile ("tb.vcd");
@@ -42,7 +46,7 @@ module tb (
 
     assign rst_out = outputs[1];
 
-    tinyFPGA dut(
+    riceshelley_tinyFPGA dut(
         .io_in(inputs),
         .io_out(outputs)
     );

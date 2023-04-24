@@ -3,31 +3,22 @@ from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 import math
 
-async def cfg_bel(dut, bel_prog, bel_prog_width):
-    await RisingEdge(dut.prog_clk)
-    dut.prog_en.value = 1
-    for i in range(bel_prog_width, 0, -1):
-        dut.prog_in.value = (bel_prog >> (i - 1)) & 0x1
-        await RisingEdge(dut.prog_clk)
-    dut.prog_en.value = 0
-    await RisingEdge(dut.prog_clk)
-
 async def test_prog_chain(dut, prog_len):
-    await RisingEdge(dut.dut.prog_clk)
+    await RisingEdge(dut.clk)
     dut.prog_en.value = 1
     for i in range(0, prog_len):
         dut.prog_in.value = i % 2
-        await RisingEdge(dut.dut.prog_clk)
+        await RisingEdge(dut.clk)
     dut.prog_en.value = 0
-    await RisingEdge(dut.dut.prog_clk)
+    await RisingEdge(dut.clk)
 
 @cocotb.test()
 async def test_fpga(dut):
     dut._log.info("start")
 
-    bel_input_width = dut.dut.BEL_INPUT_WIDTH.value
-    bels_in_cluster = dut.dut.BELS.value
-    cluster_input_width = dut.dut.CLUSTER_INPUT_WIDTH.value
+    bel_input_width = dut.BEL_INPUT_WIDTH.value
+    bels_in_cluster = dut.BELS.value
+    cluster_input_width = dut.CLUSTER_INPUT_WIDTH.value
 
     bel_in_prog_mux_width = cluster_input_width + bels_in_cluster
     dut._log.info(f"bel input prog mux width {bel_in_prog_mux_width}")
@@ -79,9 +70,8 @@ async def test_fpga(dut):
     # prog in -> bel 0 (prog_mux [4 : 0] -> bel N (prog_mux [4 : 0]) -> output pin prog muxs [3 : 0] -> prog out
     #def cfg_bel(lut_cfg, pin0_sel, pin1_sel, pin2_sel, pin3_sel, pin4_sel, ff_en):
 
-
-
-
+    # Test that programming chain is correct
     await test_prog_chain(dut, total_bit_stream_len)
+    assert (dut.prog_out.value == 0)
 
     await ClockCycles(dut.clk, 1000)

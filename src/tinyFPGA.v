@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 1ns/1ps
 
-module tinyFPGA (
+module riceshelley_tinyFPGA (
   input wire [7:0] io_in,
   output wire [7:0] io_out
 );
