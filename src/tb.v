@@ -33,7 +33,7 @@ module tb (
 
     // wire up the inputs and outputs
     /* verilator lint_off UNOPTFLAT */
-    wire [7:0] inputs = prog_en ? {5'd0, prog_in, prog_en, clk} : {fpga_inputs, rst, prog_en, clk};
+    wire [7:0] inputs = prog_en ? {5'd0, prog_en, prog_in, clk} : {fpga_inputs, prog_en, rst, clk};
     /* verilator lint_on UNOPTFLAT */
 
     /* verilator lint_off UNUSED */

@@ -15,17 +15,18 @@ module riceshelley_tinyFPGA (
     wire prog_in;
     wire prog_out;
 
+    wire clk = io_in[0];
     assign prog_clk = io_in[0];
-    assign prog_en = io_in[1];
-    assign prog_in = io_in[2];
+
+    assign prog_in = io_in[1];
+    wire rst = io_in[1] & (prog_en == 1'b0);
+
+    assign prog_en = io_in[2];
 
     wire [BELS - 1 : 0] fpga_out;
 
     // assign inputs to cluster
     wire [4:0] cluster_in = io_in[7:3];
-
-    wire clk = io_in[0];
-    wire rst = io_in[2] & (prog_en == 1'b0);
 
     assign io_out[0 +: BELS] = fpga_out;
     assign io_out[BELS] = 0;
