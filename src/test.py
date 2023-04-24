@@ -4,8 +4,8 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 import math
 
 async def cfg_bel(dut, bel_prog, bel_prog_width):
-    await RisingEdge(dut.prog_clk)
     dut.prog_en.value = 1
+    await RisingEdge(dut.prog_clk)
     for i in range(bel_prog_width, 0, -1):
         dut.prog_in.value = (bel_prog >> (i - 1)) & 0x1
         await RisingEdge(dut.prog_clk)
@@ -13,8 +13,8 @@ async def cfg_bel(dut, bel_prog, bel_prog_width):
     await RisingEdge(dut.prog_clk)
 
 async def test_prog_chain(dut, prog_len):
-    await RisingEdge(dut.dut.prog_clk)
     dut.prog_en.value = 1
+    await RisingEdge(dut.dut.prog_clk)
     for i in range(0, prog_len):
         dut.prog_in.value = i % 2
         await RisingEdge(dut.dut.prog_clk)

@@ -18,7 +18,7 @@ module tb (
     output wire rst_out,
 
     input wire [4:0] fpga_inputs,
-    output wire [5:0] fpga_outputs
+    output wire [4:0] fpga_outputs
    );
 
     // this part dumps the trace to a vcd file that can be viewed with GTKWave
@@ -34,7 +34,7 @@ module tb (
 
     wire [7:0] outputs;
     assign prog_out = outputs[0];
-    assign fpga_outputs = outputs[7:2];
+    assign fpga_outputs = outputs[7:3];
 
     assign rst_out = outputs[1];
 
