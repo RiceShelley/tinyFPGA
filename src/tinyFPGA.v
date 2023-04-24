@@ -26,10 +26,14 @@ module tinyFPGA (
     wire clk = io_in[0];
     wire rst = io_in[2] & (prog_en == 1'b0);
 
+    localparam BEL_INPUT_WIDTH = 5;
+    localparam BELS = 7;
+    localparam CLUSTER_INPUT_WIDTH = 5;
+
     logic_cluster #(
-        .BEL_INPUT_WIDTH(5),
-        .BELS(6),
-        .CLUSTER_INPUT_WIDTH(5)
+        .BEL_INPUT_WIDTH(BEL_INPUT_WIDTH),
+        .BELS(BELS),
+        .CLUSTER_INPUT_WIDTH(CLUSTER_INPUT_WIDTH)
     ) logic_cluster_dut (
         // Programming interface
         .prog_clk       (prog_clk),
